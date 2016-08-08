@@ -31,6 +31,8 @@ for c=1:2,
         currentImage = imread(strcat(filepathExtension,'\',currentFileName));
         if (ndims(currentImage)==3)
             grayImage=rgb2gray(currentImage);
+        else
+            grayImage = currentImage;
         end
 %         if(index==4343)
 %             nfiles;
