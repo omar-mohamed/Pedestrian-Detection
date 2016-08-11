@@ -62,15 +62,6 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-%%
-%converting y
-
-Y=zeros(size(y,1),num_labels);
-for(i=1:size(y,1))
-    tmp=zeros(num_labels,1);
-    tmp(y(i),1)=1;
-    Y(i,:)=tmp;
-end
 
 %%
 
@@ -98,7 +89,7 @@ theta2_withoutBiasSquared=Theta2(1:end,2:end).^2;
 
 h_trans=a3';
 
-cost=log(h_trans).*Y+log(1-h_trans).*(1-Y);
+cost=log(h_trans).*y+log(1-h_trans).*(1-y);
 
 J=(-1/m)*sum(cost(:))+ (lambda/(2*m))*(sum(theta1_withoutBiasSqaured(:)) +sum(theta2_withoutBiasSquared(:)) );
 
@@ -106,7 +97,7 @@ J=(-1/m)*sum(cost(:))+ (lambda/(2*m))*(sum(theta1_withoutBiasSqaured(:)) +sum(th
 %%
 %Back propagation
 
-error3=h_trans-Y;
+error3=h_trans-y;
 
 error2=(error3*Theta2(:,2:end)).* sigmoidGradient(z2)';
 

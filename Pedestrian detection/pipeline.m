@@ -1,19 +1,19 @@
 %% Setup the parameters you will use 
-input_layer_size  = 400;  % 20x20 
-hidden_layer_size = 25;   % 25 hidden units
+input_layer_size  = 8192;  
+hidden_layer_size = 500;   
 num_labels = 1;          % 0 or 1
 
 %% ===========  Loading Data =============
 
 fprintf('Loading  Data ...\n')
 
-load('ex4data1.mat','X');
+load('X_norm.mat');
 
-load('ex4data1.mat','y');
+load('y.mat');
 
-load('ex4data1.mat','mu');
+%load('Meu.mat','mu');
 
-load('ex4data1.mat','sigma');
+%load('Sigma.mat','sigma');
 
 %% ================ Initializing Pameters ================
 
@@ -39,7 +39,7 @@ lambda = 1;
 costFunction = @(p) nnCostFunction(p, ...
                                    input_layer_size, ...
                                    hidden_layer_size, ...
-                                   num_labels, X, y, lambda);
+                                   num_labels, X_norm, y, lambda);
 
 % Now, costFunction is a function that takes in only one argument (the
 % neural network parameters)
