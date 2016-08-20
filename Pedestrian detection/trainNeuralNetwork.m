@@ -17,9 +17,9 @@ load('X_norm.mat');
 
 load('y.mat');
 
-load('X_test_norm.mat');
+%load('X_test_norm.mat');
 
-load('y_test.mat');
+%load('y_test.mat');
 
 %load('Meu.mat','mu');
 
@@ -56,13 +56,14 @@ costFunction = @(p) nnCostFunction(p, ...
 minCost = 1000000;
 n = 0;
 for i=1 : nRepetitions
-    fprintf('\n Calculating the %d Repitition...', i);
+    fprintf('\n Calculating the %d Repitition...\n', i);
     [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
-    fprintf('Cost in this Repitition: %d\n', cost);
-    if (cost < minCost)
+    lastCost=cost(size(cost,1));
+    fprintf('Cost in this Repitition: %d\n',lastCost );
+    if (lastCost < minCost)
         n = i; 
         bestParams = nn_params;
-        minCost = cost;
+        minCost = lastCost;
     end
 end
 fprintf('\n Chosen the %d Repitition with minCost = %d \n', n, minCost);
