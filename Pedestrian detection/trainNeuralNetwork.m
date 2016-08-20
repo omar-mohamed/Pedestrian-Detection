@@ -1,4 +1,4 @@
-function [ Theta1, Theta2 ] = trainNeuralNetwork( hidden_layer_size,lambda, trainingStepsMax, nRepetitions)
+function [ Theta1, Theta2 ] = trainNeuralNetwork( hiddenLayerSize,lambda, trainingStepsMax, nRepetitions)
 
 
 if nargin < 4
@@ -29,8 +29,8 @@ load('y_test.mat');
 
 fprintf('\nInitializing Neural Network Parameters ...\n')
 
-initial_Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size);
-initial_Theta2 = randInitializeWeights(hidden_layer_size, num_labels);
+initial_Theta1 = randInitializeWeights(input_layer_size, hiddenLayerSize);
+initial_Theta2 = randInitializeWeights(hiddenLayerSize, num_labels);
 
 % Unroll parameters
 initial_nn_params = [initial_Theta1(:) ; initial_Theta2(:)];
@@ -48,26 +48,30 @@ options = optimset('MaxIter', trainingStepsMax);
 
 costFunction = @(p) nnCostFunction(p, ...
                                    input_layer_size, ...
-                                   hidden_layer_size, ...
+                                   hiddenLayerSize, ...
                                    num_labels, X_norm, y, lambda);
 
 % Now, costFunction is a function that takes in only one argument (the
 % neural network parameters)
 minCost = 1000000;
+n = 0;
 for i=1 : nRepetitions
+    fprintf('\n Calculating the %d Repitition...', i);
     [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
-    
+    fprintf('Cost in this Repitition: %d\n', cost);
     if (cost < minCost)
+        n = i; 
         bestParams = nn_params;
         minCost = cost;
     end
 end
+fprintf('\n Chosen the %d Repitition with minCost = %d \n', n, minCost);
 % Obtain Theta1 and Theta2 back from nn_params
-Theta1 = reshape(bestParams(1:hidden_layer_size * (input_layer_size + 1)), ...
-                 hidden_layer_size, (input_layer_size + 1));
+Theta1 = reshape(bestParams(1:hiddenLayerSize * (input_layer_size + 1)), ...
+                 hiddenLayerSize, (input_layer_size + 1));
 
-Theta2 = reshape(bestParams((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
-                 num_labels, (hidden_layer_size + 1));
+Theta2 = reshape(bestParams((1 + (hiddenLayerSize * (input_layer_size + 1))):end), ...
+                 num_labels, (hiddenLayerSize + 1));
 
 
 
