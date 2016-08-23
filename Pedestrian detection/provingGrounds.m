@@ -5,15 +5,16 @@ function [ accPer, bestTheta1, bestTheta2, p ] = provingGrounds(startingHiddenLa
 load('X_test_norm.mat');
 load('y_test.mat');
 
-bestAccuracy=0; lambda = startingLambda;
+bestAccuracy=0;
 
 for hiddenLayerSize=startingHiddenLayerSize:maxHiddenLayerSize
     fprintf('Calculating with size of hidden layer = %d...\n', hiddenLayerSize);
+     lambda = startingLambda;
     while lambda<=maxLambda
         fprintf('At Lambda = %.2d \n', lambda);
          [ Theta1, Theta2 ] = trainNeuralNetwork( hiddenLayerSize,lambda, trainingStepsMax, nRepetitions);
          [ accPer,  p] = Error( X_test_norm, y_test,Theta1,Theta2);
-         fprintf('Error = %3.2d\n', accPer)
+         fprintf('Accuracy = %3.2d\n', accPer)
          if(accPer>bestAccuracy)
              bestAccuracy=accPer;
              bestTheta1 = Theta1;
