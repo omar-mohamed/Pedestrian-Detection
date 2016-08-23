@@ -1,15 +1,15 @@
-function [ accPer, bestTheta1, bestTheta2, p ] = provingGrounds(startingHiddenLayerSize, maxHiddenLayerSize, maxLambda,trainingStepsMax,nRepetitions )
+function [ accPer, bestTheta1, bestTheta2, p ] = provingGrounds(startingHiddenLayerSize, maxHiddenLayerSize,startingLambda, maxLambda,trainingStepsMax,nRepetitions )
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
 
 load('X_test_norm.mat');
 load('y_test.mat');
 
-bestAccuracy=0; lambda = 0.01;
+bestAccuracy=0; lambda = startingLambda;
 
 for hiddenLayerSize=startingHiddenLayerSize:maxHiddenLayerSize
     fprintf('Calculating with size of hidden layer = %d...\n', hiddenLayerSize);
-    for lambda=0.01:lambda:maxLambda
+    while lambda<=maxLambda
         fprintf('At Lambda = %.2d \n', lambda);
          [ Theta1, Theta2 ] = trainNeuralNetwork( hiddenLayerSize,lambda, trainingStepsMax, nRepetitions);
          [ accPer,  p] = Error( X_test_norm, y_test,Theta1,Theta2);
@@ -19,6 +19,7 @@ for hiddenLayerSize=startingHiddenLayerSize:maxHiddenLayerSize
              bestTheta1 = Theta1;
              bestTheta2 = Theta2;
          end
+         lambda=lambda*2;
     end
 end
 
