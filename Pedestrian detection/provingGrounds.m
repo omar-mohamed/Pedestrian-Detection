@@ -1,4 +1,4 @@
-function [ accPer, bestTheta1, bestTheta2, p ] = provingGrounds(startingHiddenLayerSize, maxHiddenLayerSize,startingLambda, maxLambda,trainingStepsMax,nRepetitions )
+function [ accPer, bestTheta1, bestTheta2,bestLambda, p ] = provingGrounds(startingHiddenLayerSize, maxHiddenLayerSize,startingLambda, maxLambda,trainingStepsMax,nRepetitions )
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -6,7 +6,7 @@ load('X_test_norm.mat');
 load('y_test.mat');
 
 bestAccuracy=0;
-
+bestLambda=startingLambda;
 for hiddenLayerSize=startingHiddenLayerSize:maxHiddenLayerSize
     fprintf('Calculating with size of hidden layer = %d...\n', hiddenLayerSize);
      lambda = startingLambda;
@@ -19,8 +19,12 @@ for hiddenLayerSize=startingHiddenLayerSize:maxHiddenLayerSize
              bestAccuracy=accPer;
              bestTheta1 = Theta1;
              bestTheta2 = Theta2;
+             bestLambda=lambda;
          end
          lambda=lambda*2;
+         if(lambda==0)
+             lambda=0.001;
+         end
     end
 end
 
